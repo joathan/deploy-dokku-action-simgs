@@ -42,7 +42,7 @@ echo "REVIEW APP= $INPUT_REVIEW_APP"
 if [ "$INPUT_REVIEW_APP" = false ]; then
   APP_NAME="${INPUT_PROJECT}"
 else
-  APP_NAME="${INPUT_PROJECT}-${APP_NAME}"
+  APP_NAME="${APP_NAME}"
 fi
 
 echo "APP NAME=$APP_NAME"
@@ -69,33 +69,33 @@ echo $CREATE_APP_COMMAND
 echo $SET_VARIABLES_COMMAND
 echo "======================================="
 
-ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@$INPUT_HOST $CREATE_APP_COMMAND
-ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@$INPUT_HOST $SET_VARIABLES_COMMAND
+ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no dokku@$INPUT_HOST $CREATE_APP_COMMAND
+ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no dokku@$INPUT_HOST $SET_VARIABLES_COMMAND
 
 if [ "$INPUT_POSTGRES" = true ]; then
   CREATE_POSTGRES_COMMAND="sh ./scripts/postgres.sh $APP_NAME"
   echo "Configurando instancia POSTGRES...aguarde!"
-  ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@$INPUT_HOST $CREATE_POSTGRES_COMMAND
+  ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no dokku@$INPUT_HOST $CREATE_POSTGRES_COMMAND
 fi
 
 if [ "$INPUT_REDIS" = true ]; then
   CREATE_REDIS_COMMAND="sh ./scripts/redis.sh $APP_NAME"
   echo "Configurando instancia REDIS...aguarde!"
-  ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@$INPUT_HOST $CREATE_REDIS_COMMAND
+  ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no dokku@$INPUT_HOST $CREATE_REDIS_COMMAND
 fi
 
 if [ "$INPUT_ELASTICSEARCH" = true ]; then
   CREATE_ELASTICSEARCH_COMMAND="sh ./scripts/elasticsearch.sh $APP_NAME"
   echo "Configurando instancia ELASTICSEARCH.. aguarde!"
-  ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@$INPUT_HOST $CREATE_ELASTICSEARCH_COMMAND
+  ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no dokku@$INPUT_HOST $CREATE_ELASTICSEARCH_COMMAND
 fi
 
 if [ "$INPUT_MONGO" = true ]; then
   CREATE_MONGO_COMMAND="sh ./scripts/mongo.sh $APP_NAME"
   echo "Configurando instancia MONGO...aguarde!"
-  ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@$INPUT_HOST $CREATE_MONGO_COMMAND
+  ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no dokku@$INPUT_HOST $CREATE_MONGO_COMMAND
 fi
 
 GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git push -f dokku@"$INPUT_HOST":"$APP_NAME" "$INPUT_BRANCH":master
 
-ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@$INPUT_HOST $POST_DEPLOY_COMMAND
+ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no dokku@$INPUT_HOST $POST_DEPLOY_COMMAND
