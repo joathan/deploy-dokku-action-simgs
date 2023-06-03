@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Deploy the application
-        uses: joathan/deploy-dokku-action@main
+        uses: joathan/deploy-dokku-action-simgs@main
         with:
           PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
