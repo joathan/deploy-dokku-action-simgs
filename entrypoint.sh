@@ -100,6 +100,6 @@ echo "INPUT_HOST - $INPUT_HOST"
 echo "APP_NAME - $APP_NAME"
 echo "INPUT_BRANCH - $INPUT_BRANCH"
 
-GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git push -f ubuntu@"$INPUT_HOST":"$APP_NAME" "$INPUT_BRANCH":master
+GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git push -f dokku@"$INPUT_HOST":"$APP_NAME" "$INPUT_BRANCH":master
 
 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@$INPUT_HOST $POST_DEPLOY_COMMAND
